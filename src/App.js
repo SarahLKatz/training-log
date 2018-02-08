@@ -1,121 +1,28 @@
 import React, { Component } from 'react';
-// import SingleRun from './SingleRun';
-import convert from 'convert-units';
 import logo from './logo.svg';
 import './App.css';
 import styled, { css } from 'react-emotion';
+import calendar from './utils/calendar.js'
 
-// const stravaQueryHeaders = process.env.STRAVA_QUERY_HEADERS;
-
-const sampleRun = {
-  "id": 1394237509,
-  "resource_state": 2,
-  "external_id": "garmin_push_2481552282",
-  "upload_id": 1504424724,
-  "athlete": {
-      "id": 20198690,
-      "resource_state": 1
-  },
-  "name": "3.0 miles EC",
-  "distance": 4854.3,
-  "moving_time": 2260,
-  "elapsed_time": 2260,
-  "total_elevation_gain": 37.9,
-  "type": "Run",
-  "start_date": "2018-02-06T12:25:42Z",
-  "start_date_local": "2018-02-06T07:25:42Z",
-  "timezone": "(GMT-05:00) America/New_York",
-  "utc_offset": -18000,
-  "start_latlng": [
-      40.72,
-      -73.77
-  ],
-  "end_latlng": [
-      40.72,
-      -73.77
-  ],
-  "location_city": null,
-  "location_state": null,
-  "location_country": "United States",
-  "start_latitude": 40.72,
-  "start_longitude": -73.77,
-  "achievement_count": 0,
-  "kudos_count": 3,
-  "comment_count": 0,
-  "athlete_count": 1,
-  "photo_count": 0,
-  "map": {
-      "id": "a1394237509",
-      "summary_polyline": "_qpwFfogaM{CmCsED{Ha^_ZfS`H|WuLjFjLmGoFsMw@oH~[gTjB~LlBjBr@dKnGxL",
-      "resource_state": 2
-  },
-  "trainer": false,
-  "commute": false,
-  "manual": false,
-  "private": false,
-  "flagged": false,
-  "gear_id": null,
-  "from_accepted_tag": false,
-  "average_speed": 2.148,
-  "max_speed": 2.9,
-  "has_heartrate": false,
-  "elev_high": 50,
-  "elev_low": 22.2,
-  "pr_count": 0,
-  "total_photo_count": 0,
-  "has_kudoed": false,
-  "workout_type": null
-}
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
-      runs: {
-        week1: {
-          monday: 'OFF',
-          tuesday: {
-            planned: 3.0,
-            type: 'EC',
-            completed: convert(sampleRun.distance).from('m').to('mi').toFixed(2),
-            status() {
-              return (this.completed >= this.planned) ? allGood : fail;
-            }
-          },
-          wednesday: 'OFF',
-          thursday: {
-            planned: 3.5,
-            type: 'HM Tempo',
-            completed: null,
-            status() {
-              return this.completed >= this.planned
-            }
-          },
-          friday: 'OFF',
-          saturday: 'OFF',
-          sunday: {
-            planned: 7.0,
-            type: 'Easy/LR',
-            completed: null,
-            status() {
-              return this.completed >= this.planned
-            }
-          }
-        },
-      }
+      runs: calendar
     }
+    this.importData = this.importData.bind(this);
   }
 
-  componentDidMount(){
-    // axios.get('https://www.strava.com/api/v3/athlete/activities', { headers: {'Authorization': stravaQueryHeaders} })
-    // .then(res => res.data)
-    // .then(data => console.log(data))
+  importData(e) {
+    let vars = e.target.name.split(',')
+    let week = vars[0];
+    let day = vars[1];
+    console.log(this.state.runs[week][day].date)
   }
 
   render() {
     let weeks = Object.keys(this.state.runs)
-    // let completed = convert(sampleRun.distance).from('m').to('mi').toFixed(2);
-    // let status = (completed >= 3.0) ? allGood : fail;
     return (
       <div className="App">
         <header className="App-header">
@@ -123,7 +30,7 @@ class App extends Component {
           <h1 className="App-title">Sarah's Training App</h1>
         </header>
         <table>
-          <THead>
+          <thead>
             <TR className={header}>
               <TD>Monday</TD>
               <TD>Tuesday</TD>
@@ -133,7 +40,7 @@ class App extends Component {
               <TD>Saturday</TD>
               <TD>Sunday</TD>
             </TR>
-          </THead>
+          </thead>
           <tbody>
             {
               weeks.map(week => {
@@ -142,71 +49,148 @@ class App extends Component {
                   <TR key={week}>
                     <TD>
                       {
-                        typeof monday === 'string' ? 
-                        monday :
+                        (monday.planned === 'OFF') ? 
                         <div>
+                          <p className={bold}>{monday.date}</p>
+                          <p> { monday.planned } </p>
+                        </div>
+                        :
+                        <div>
+                          <p className={bold}>{monday.date}</p>
+                          { monday.warmup && <p className={monday.warmupStatus()}>Warm Up: {monday.warmup} Easy/LR</p>}
                           <p>Planned: {monday.planned} {monday.type}</p>
-                          {monday.completed && <p className={monday.status()}>Completed: {monday.completed} miles</p> }
+                          { monday.cooldown && <p className={monday.cooldownStatus()}>Cool Down: {monday.cooldown} Easy/LR</p>}
+                          { (monday.completed) ? 
+                            <p className={monday.status()}>Completed: {monday.completed} miles</p> 
+                            :
+                            <button onClick={this.importData} name={`${week},monday`}>Import Run(s)</button>
+                          }
                         </div>
                       }
                     </TD>
                     <TD>
                       {
-                        typeof tuesday === 'string' ? 
-                        tuesday :
+                        (tuesday.planned === 'OFF') ? 
                         <div>
+                          <p className={bold}>{tuesday.date}</p>
+                          <p> { tuesday.planned } </p>
+                        </div>
+                        :
+                        <div>
+                          <p className={bold}>{tuesday.date}</p>
+                          { tuesday.warmup && <p className={tuesday.warmupStatus()}>Warm Up: {tuesday.warmup} Easy/LR</p>}
                           <p>Planned: {tuesday.planned} {tuesday.type}</p>
-                          { tuesday.completed && <p className={tuesday.status()}>Completed: {tuesday.completed} miles</p> }
+                          { tuesday.cooldown && <p className={tuesday.cooldownStatus()}>Cool Down: {tuesday.cooldown} Easy/LR</p>}
+                          { (tuesday.completed) ? 
+                            <p className={tuesday.status()}>Completed: {tuesday.completed} miles</p> 
+                            :
+                            <button onClick={this.importData} name={`${week},tuesday`}>Import Run(s)</button>
+                          }
                         </div>
                       }
                     </TD>
                     <TD>
                       {
-                        typeof wednesday === 'string' ? 
-                        wednesday :
+                        (wednesday.planned === 'OFF') ? 
                         <div>
+                          <p className={bold}>{wednesday.date}</p>
+                          <p> { wednesday.planned } </p>
+                        </div> 
+                        :
+                        <div>
+                          <p className={bold}>{wednesday.date}</p>
+                          { wednesday.warmup && <p className={wednesday.warmupStatus()}>Warm Up: {wednesday.warmup} Easy/LR</p>}
                           <p>Planned: {wednesday.planned} {wednesday.type}</p>
-                          { wednesday.completed && <p className={wednesday.status()}>Completed: {wednesday.completed} miles</p> }
+                          { wednesday.cooldown && <p className={wednesday.cooldownStatus()}>Cool Down: {wednesday.cooldown} Easy/LR</p>}
+                          { (wednesday.completed) ? 
+                            <p className={wednesday.status()}>Completed: {wednesday.completed} miles</p> 
+                            :
+                            <button onClick={this.importData} name={`${week},wednesday`}>Import Run(s)</button>
+                          }
                         </div>
                       }
                     </TD>
                     <TD>
                       {
-                        typeof thursday === 'string' ? 
-                        thursday :
+                        (thursday.planned === 'OFF') ? 
                         <div>
+                          <p className={bold}>{thursday.date}</p>
+                          <p> { thursday.planned } </p>
+                        </div>
+                        :
+                        <div>
+                          <p className={bold}>{thursday.date}</p>
+                          { thursday.warmup && <p className={thursday.warmupStatus()}>Warm Up: {thursday.warmup} Easy/LR</p>}
                           <p>Planned: {thursday.planned} {thursday.type}</p>
-                          { thursday.completed && <p className={thursday.status()}>Completed: {thursday.completed} miles</p> }
+                          { thursday.cooldown && <p className={thursday.cooldownStatus()}>Cool Down: {thursday.cooldown} Easy/LR</p>}
+                          { (thursday.completed) ? 
+                            <p className={thursday.status()}>Completed: {thursday.completed} miles</p> 
+                            :
+                            <button onClick={this.importData} name={`${week},thursday`}>Import Run(s)</button>
+                          }
                         </div>
                       }
                     </TD>
                     <TD>
                       {
-                        typeof friday === 'string' ? 
-                        friday :
+                        (friday.planned === 'OFF') ? 
                         <div>
+                          <p className={bold}>{friday.date}</p>
+                          <p> { friday.planned } </p>
+                        </div>
+                        :
+                        <div>
+                          <p className={bold}>{friday.date}</p>
+                          { friday.warmup && <p className={friday.warmupStatus()}>Warm Up: {friday.warmup} Easy/LR</p>}
                           <p>Planned: {friday.planned} {friday.type}</p>
-                          { friday.completed && <p className={friday.status()}>Completed: {friday.completed} miles</p> }
+                          { friday.cooldown && <p className={friday.cooldownStatus()}>Cool Down: {friday.cooldown} Easy/LR</p>}
+                          { (friday.completed) ? 
+                            <p className={friday.status()}>Completed: {friday.completed} miles</p> 
+                            :
+                            <button onClick={this.importData} name={`${week},friday`}>Import Run(s)</button>
+                          }
                         </div>
                       }
                     </TD>
                     <TD>
                       {
-                        typeof saturday === 'string' ? 
-                        saturday :
+                        (saturday.planned === 'OFF') ? 
                         <div>
+                          <p className={bold}>{saturday.date}</p>
+                          <p> { saturday.planned } </p>
+                        </div>
+                        :
+                        <div>
+                          <p className={bold}>{saturday.date}</p>
+                          { saturday.warmup && <p className={saturday.warmupStatus()}>Warm Up: {saturday.warmup} Easy/LR</p>}
                           <p>Planned: {saturday.planned} {saturday.type}</p>
-                          { saturday.completed && <p className={saturday.status()}>Completed: {saturday.completed} miles</p> }
+                          { saturday.cooldown && <p className={saturday.cooldownStatus()}>Cool Down: {saturday.cooldown} Easy/LR</p>}
+                          { (saturday.completed) ? 
+                            <p className={saturday.status()}>Completed: {saturday.completed} miles</p> 
+                            :
+                            <button onClick={this.importData} name={`${week},saturday`}>Import Run(s)</button>
+                          }
                         </div>
                       }
                     </TD>
                     <TD>
                       {
-                        typeof sunday === 'string' ? 
-                        sunday :
+                        (sunday.planned === 'OFF') ? 
                         <div>
+                          <p className={bold}>{sunday.date}</p>
+                          <p> { sunday.planned } </p>
+                        </div>
+                        :
+                        <div>
+                          <p className={bold}>{sunday.date}</p>
+                          { sunday.warmup && <p className={sunday.warmupStatus()}>Warm Up: {sunday.warmup} Easy/LR</p>}
                           <p>Planned: {sunday.planned} {sunday.type}</p>
-                          { sunday.completed && <p className={sunday.status()}>Completed: {sunday.completed} miles</p> }
+                          { sunday.cooldown && <p className={sunday.cooldownStatus()}>Cool Down: {sunday.cooldown} Easy/LR</p>}
+                          { (sunday.completed) ? 
+                            <p className={sunday.status()}>Completed: {sunday.completed} miles</p> 
+                            :
+                            <button onClick={this.importData} name={`${week},sunday`}>Import Run(s)</button>
+                          }
                         </div>
                       }
                     </TD>
@@ -222,11 +206,6 @@ class App extends Component {
 }
 
 
-
-const THead = styled('thead')`
-  border: 3px solid black;
-`
-
 const header = css`
   color: rebeccapurple;
   font-weight: bold;
@@ -238,15 +217,12 @@ const TR = styled('tr')`
 
 const TD = styled('td')`
   border: 1px solid black;
+  padding: 1vw;
 `
 
-const allGood = css`
-  color: darkgreen;
+const bold = css`
+  color: indianred;
   font-weight: bold;
-`
-
-const fail = css`
-  color: red;
 `
 
 export default App;

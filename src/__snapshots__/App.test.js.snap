@@ -1,0 +1,219 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`main page displays as expected 1`] = `
+<div
+  className="App"
+>
+  <header
+    className="App-header"
+  >
+    <img
+      alt="logo"
+      className="App-logo"
+      src="logo.svg"
+    />
+    <h1
+      className="App-title"
+    >
+      Sarah's Training App
+    </h1>
+  </header>
+  <table>
+    <thead>
+      <tr
+        className="css-dkmjt3"
+      >
+        <td
+          className="css-13jbay9"
+        >
+          Monday
+        </td>
+        <td
+          className="css-13jbay9"
+        >
+          Tuesday
+        </td>
+        <td
+          className="css-13jbay9"
+        >
+          Wednesday
+        </td>
+        <td
+          className="css-13jbay9"
+        >
+          Thursday
+        </td>
+        <td
+          className="css-13jbay9"
+        >
+          Friday
+        </td>
+        <td
+          className="css-13jbay9"
+        >
+          Saturday
+        </td>
+        <td
+          className="css-13jbay9"
+        >
+          Sunday
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        className="css-tswxj3"
+      >
+        <td
+          className="css-13jbay9"
+        >
+          <div>
+            <p
+              className="css-ddwizh"
+            >
+              2-5-2018
+            </p>
+            <p>
+               
+              OFF
+               
+            </p>
+          </div>
+        </td>
+        <td
+          className="css-13jbay9"
+        >
+          <div>
+            <p
+              className="css-ddwizh"
+            >
+              2-6-2018
+            </p>
+            <p>
+              Planned: 
+              3
+               
+              EC
+            </p>
+            <p
+              className="css-yylhj"
+            >
+              Completed: 
+              3.02
+               miles
+            </p>
+          </div>
+        </td>
+        <td
+          className="css-13jbay9"
+        >
+          <div>
+            <p
+              className="css-ddwizh"
+            >
+              2-7-2018
+            </p>
+            <p>
+               
+              OFF
+               
+            </p>
+          </div>
+        </td>
+        <td
+          className="css-13jbay9"
+        >
+          <div>
+            <p
+              className="css-ddwizh"
+            >
+              2-8-2018
+            </p>
+            <p
+              className="css-qafjh4"
+            >
+              Warm Up: 
+              1
+               Easy/LR
+            </p>
+            <p>
+              Planned: 
+              3.5
+               
+              HM Tempo
+            </p>
+            <p
+              className="css-qafjh4"
+            >
+              Cool Down: 
+              0.5
+               Easy/LR
+            </p>
+            <button
+              name="week2,thursday"
+              onClick={[Function]}
+            >
+              Import Run(s)
+            </button>
+          </div>
+        </td>
+        <td
+          className="css-13jbay9"
+        >
+          <div>
+            <p
+              className="css-ddwizh"
+            >
+              2-9-2018
+            </p>
+            <p>
+               
+              OFF
+               
+            </p>
+          </div>
+        </td>
+        <td
+          className="css-13jbay9"
+        >
+          <div>
+            <p
+              className="css-ddwizh"
+            >
+              2-10-2018
+            </p>
+            <p>
+               
+              OFF
+               
+            </p>
+          </div>
+        </td>
+        <td
+          className="css-13jbay9"
+        >
+          <div>
+            <p
+              className="css-ddwizh"
+            >
+              2-11-2018
+            </p>
+            <p>
+              Planned: 
+              7
+               
+              Easy/LR
+            </p>
+            <button
+              name="week2,sunday"
+              onClick={[Function]}
+            >
+              Import Run(s)
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
