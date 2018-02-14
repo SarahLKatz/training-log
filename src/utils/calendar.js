@@ -85,8 +85,111 @@ calendar.week2 = {
     date: '2-8-2018',
     warmup: 1.0,
     warmupCompleted: null,
-    planned: 3.5,
+    planned: 2.0,
     cooldown:0.5,
+    cooldownCompleted: null,
+    type: 'HM Tempo',
+    completed: null,
+    warmupStatus() {
+      let name;
+      if (!this.warmupCompleted) {
+        name = plain;
+      } else if (this.warmupCompleted >= this.warmup) {
+        name = allGood;
+      } else {
+        name = fail;
+      }
+      return name;
+    },
+    cooldownStatus() {
+      let name;
+      if (!this.cooldownCompleted) {
+        name = plain;
+      } else if (this.cooldownCompleted >= this.cooldown) {
+        name = allGood;
+      } else {
+        name = fail;
+      }
+      return name;
+    },
+    status() {
+      return (this.completed >= this.planned) ? allGood : fail;
+    }
+  },
+  friday: {
+    date: '2-9-2018',
+    planned: 'OFF'
+  },
+  saturday: {
+    date: '2-10-2018',
+    planned: 'OFF'
+  },
+  sunday: {
+    date: '2-11-2018',
+    planned: 7.0,
+    type: 'Easy/LR',
+    completed: null,
+    status() {
+      return this.completed >= this.planned
+    }
+  }
+}
+
+calendar.week3 = {
+  monday: {
+    date: '2-12-2018', 
+    planned: 'OFF'
+  },
+  tuesday: {
+    date: '2-13-2018',
+    warmup: 1.0,
+    warmupCompleted: null,
+    planned: 1.0,
+    cooldown: 1.0,
+    cooldownCompleted: null,
+    type: '10K',
+    completed: null,
+    warmupStatus() {
+      let name;
+      if (!this.warmupCompleted) {
+        name = plain;
+      } else if (this.warmupCompleted >= this.warmup) {
+        name = allGood;
+      } else {
+        name = fail;
+      }
+      return name;
+    },
+    cooldownStatus() {
+      let name;
+      if (!this.cooldownCompleted) {
+        name = plain;
+      } else if (this.cooldownCompleted >= this.cooldown) {
+        name = allGood;
+      } else {
+        name = fail;
+      }
+      return name;
+    },
+    status() {
+      return this.completed >= this.planned
+    }
+  },
+  wednesday: {
+    date: '2-14-2018',
+    planned: 3.3,
+    type: 'Easy/LR',
+    completed: null,
+    status() {
+      return this.completed >= this.planned
+    }
+  },
+  thursday: {
+    date: '2-15-2018',
+    warmup: 0.5,
+    warmupCompleted: null,
+    planned: 3.0,
+    cooldown: 0.5,
     cooldownCompleted: null,
     type: 'HM Tempo',
     completed: null,
@@ -117,16 +220,16 @@ calendar.week2 = {
     }
   },
   friday: {
-    date: '2-9-2018',
+    date: '2-16-2018',
     planned: 'OFF'
   },
   saturday: {
-    date: '2-10-2018',
+    date: '2-17-2018',
     planned: 'OFF'
   },
   sunday: {
-    date: '2-11-2018',
-    planned: 7.0,
+    date: '2-18-2018',
+    planned: 10.0,
     type: 'Easy/LR',
     completed: null,
     status() {

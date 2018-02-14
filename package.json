@@ -1,5 +1,5 @@
 {
-  "name": "hashtag-search",
+  "name": "training-log",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -10,6 +10,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-emotion": "^9.0.0",
+    "react-popup": "^0.9.2",
     "react-scripts": "1.1.0",
     "react-test-renderer": "^16.2.0"
   },
