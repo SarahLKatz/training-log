@@ -3,7 +3,7 @@ import logo from '../logo.svg';
 import '../App.css';
 import styled, { css } from 'react-emotion';
 import calendar from '../utils/calendar.js';
-import Popup from 'react-popup';
+import swal from 'sweetalert2';
 
 class App extends Component {
   constructor() {
@@ -24,56 +24,41 @@ class App extends Component {
   }
 
   showDay(data) {
-    let {date, warmup, warmupCompleted, planned, cooldown, cooldownCompleted, type, completed} = data;
+    let {date, warmup, warmupCompleted, planned, cooldown, cooldownCompleted, type, completed, pace} = data;
+    let icon, alertHTML, footerText; 
+
     if (!completed & !warmup) {
-      Popup.alert(
-        <div>
-          <header className="mm-popup__box__header">
-            <h1 className="mm-popup__box__header__title">{date} - {type}</h1>
-          </header>
-          <div className="mm-popup__box__body">
-            <p className="plain">{planned} miles planned</p>
-          </div>
-        </div>
-      );
+      icon = 'info';
+      alertHTML = `<p className="plain">${planned} miles planned</p>`;
+      footerText = 'Have Fun!'
     } else if (!completed) {
-      Popup.alert(
-        <div>
-          <header className="mm-popup__box__header">
-            <h1 className="mm-popup__box__header__title">{date} - {type}</h1>
-          </header>
-          <div className="mm-popup__box__body">
-            <p className="plain">Warm Up: {warmup} miles planned</p>
-            <p className="plain">{type}: {planned} miles planned</p>
-            <p className="plain">Cool Down: {cooldown} miles planned</p>
-          </div>
-        </div>
-      );
+      icon = 'info';
+      alertHTML = `<div>
+                    <p className="plain">Warm Up: ${warmup} miles planned</p>
+                    <p className="plain">${type}: ${planned} miles planned</p>
+                    <p className="plain">Cool Down: ${cooldown} miles planned</p>
+                  </div>`;
+      footerText = "Don't go too fast on the warm up and cool down!"
     } else if (warmup) {
-      Popup.alert(
-        <div>
-          <header className="mm-popup__box__header">
-            <h1 className="mm-popup__box__header__title">{date} - {type}</h1>
-          </header>
-          <div className="mm-popup__box__body">
-            <p className={data.warmupStatus()}>Warm Up: {warmup} miles planned ~ {warmupCompleted} miles completed</p>
-            <p className={data.status()}>{type}: {planned} miles planned ~ {completed} miles completed</p>
-            <p className={data.cooldownStatus()}>Cool Down: {cooldown} miles planned ~ {cooldownCompleted} miles completed</p>
-          </div>
-        </div>
-      );
+      icon = (completed >= planned) ? 'success' : 'error'
+      alertHTML = `<div>
+                    <p className=${data.warmupStatus()}>Warm Up: ${warmup} miles planned ~ ${warmupCompleted} miles completed</p>
+                    <p className=${data.status()}>${type}: ${planned} miles planned ~ ${completed} miles completed</p>
+                    <p className=${data.cooldownStatus()}>Cool Down: ${cooldown} miles planned ~ ${cooldownCompleted} miles completed</p>
+                  </div>`
+      footerText = 'Warm Up and Cool Down Notes Will Go Here!'
     } else {
-      Popup.alert(
-        <div>
-          <header className="mm-popup__box__header">
-            <h1 className="mm-popup__box__header__title">{date} - {type}</h1>
-          </header>
-          <div className="mm-popup__box__body">
-            <p className={data.status()}>{planned} miles planned ~ {completed} miles completed</p>
-          </div>
-        </div>
-      );
+      icon = (completed >= planned) ? 'success' : 'error'
+      alertHTML = `<p className=${data.status()}>${type}: ${planned} miles planned ~ ${completed} miles completed</p>`
+      footerText = 'Good job, I guess...'
     }
+
+    swal({
+      type: icon,
+      title: `${date} - ${type}`,
+      html: alertHTML,
+      footer: footerText,
+    })
   }
 
   render() {
@@ -84,7 +69,7 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Sarah's Training App</h1>
         </header>
-        <table>
+        <table className={calendarDisplay}>
           <thead>
             <TR className={header}>
               <TD>Monday</TD>
@@ -106,7 +91,7 @@ class App extends Component {
                       {
                         (monday.planned === 'OFF') ? 
                         <div>
-                          <p>{monday.date}</p>
+                          <p className={bold}>{monday.date}</p>
                           <p> { monday.planned } </p>
                         </div>
                         :
@@ -260,6 +245,11 @@ class App extends Component {
   }
 }
 
+
+const calendarDisplay = css`
+  text-align: center;
+  margin: 3vh auto;
+`
 
 const header = css`
   color: rebeccapurple;
