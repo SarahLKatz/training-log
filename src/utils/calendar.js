@@ -61,6 +61,13 @@ const sampleRun = {
   "workout_type": null
 }
 
+function mphToMinMi(speed) {
+  let divided = (60/speed).toString().split('.');
+  let mins = divided[0];
+  let secs = (divided[1]*60).toString().slice(0,2);
+  return `${mins}:${secs}`
+}
+
 const calendar = {};
 
 calendar.week2 = {
@@ -73,6 +80,7 @@ calendar.week2 = {
     planned: 3.0,
     type: 'EC',
     completed: convert(sampleRun.distance).from('m').to('mi').toFixed(2),
+    pace: mphToMinMi(convert(sampleRun.average_speed).from('m/s').to('m/h')),
     status() {
       return (this.completed >= this.planned) ? allGood : fail;
     }
