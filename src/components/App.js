@@ -1,24 +1,31 @@
 import React, { Component } from 'react';
-
-import Header from './Header'
-import Training from './Training'
+import Header from './Header';
+import Training from './Training';
+import { logInStrava } from '../utils/strava.js';
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
-      userId: '1234'
+      userId: '',
+      name: 'Runner'
     }
+  }
+
+  connectWithStrava = (e) => {
+    e.preventDefault()
+    logInStrava();
+    this.setState({userId: '1234', name: 'Sarah'})
   }
 
   render() {
     return (
-      <Header>
+      <Header name={this.state.name}>
       {
-        this.state.userId ? 
+        this.state.userId ?
         <Training />
         :
-        <h1>Hello World</h1>
+        <button onClick={this.connectWithStrava}>Connect With Strava</button>
       }
       </Header>
     )

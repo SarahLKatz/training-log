@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import logo from '../logo.svg';
 import '../App.css';
 import styled, { css } from 'react-emotion';
-import calendar from '../utils/calendar.js';
 import swal from 'sweetalert2';
+import calendar from '../utils/calendar.js';
+import { pullActivitiesStrava } from '../utils/strava.js';
 
 class Training extends Component {
   constructor() {
@@ -20,12 +20,12 @@ class Training extends Component {
     let week = vars[0];
     let day = vars[1];
     let today = this.state.runs[week][day].date;
-    console.log(today)
+    pullActivitiesStrava(today)
   }
 
   showDay(data) {
     let {date, warmup, warmupCompleted, planned, cooldown, cooldownCompleted, type, completed, pace} = data;
-    let icon, alertHTML, footerText; 
+    let icon, alertHTML, footerText;
 
     if (!completed & !warmup) {
       icon = 'info';
@@ -85,7 +85,7 @@ class Training extends Component {
                   <TR key={week}>
                     <TD>
                       {
-                        (monday.planned === 'OFF') ? 
+                        (monday.planned === 'OFF') ?
                         <div>
                           <p className={bold}>{monday.date}</p>
                           <p> { monday.planned } </p>
@@ -96,8 +96,8 @@ class Training extends Component {
                           { monday.warmup && <p className={monday.warmupStatus()}>Warm Up: {monday.warmup} Easy/LR</p>}
                           <p>Planned: {monday.planned} {monday.type}</p>
                           { monday.cooldown && <p className={monday.cooldownStatus()}>Cool Down: {monday.cooldown} Easy/LR</p>}
-                          { (monday.completed) ? 
-                            <p className={monday.status()}>Completed: {monday.completed} miles</p> 
+                          { (monday.completed) ?
+                            <p className={monday.status()}>Completed: {monday.completed} miles</p>
                             :
                             <button onClick={this.importData} name={`${week},monday`}>Import Run(s)</button>
                           }
@@ -106,7 +106,7 @@ class Training extends Component {
                     </TD>
                     <TD>
                       {
-                        (tuesday.planned === 'OFF') ? 
+                        (tuesday.planned === 'OFF') ?
                         <div>
                           <p className={bold}>{tuesday.date}</p>
                           <p> { tuesday.planned } </p>
@@ -117,8 +117,8 @@ class Training extends Component {
                           { tuesday.warmup && <p className={tuesday.warmupStatus()}>Warm Up: {tuesday.warmup} Easy/LR</p>}
                           <p>Planned: {tuesday.planned} {tuesday.type}</p>
                           { tuesday.cooldown && <p className={tuesday.cooldownStatus()}>Cool Down: {tuesday.cooldown} Easy/LR</p>}
-                          { (tuesday.completed) ? 
-                            <p className={tuesday.status()}>Completed: {tuesday.completed} miles</p> 
+                          { (tuesday.completed) ?
+                            <p className={tuesday.status()}>Completed: {tuesday.completed} miles</p>
                             :
                             <button onClick={this.importData} name={`${week},tuesday`}>Import Run(s)</button>
                           }
@@ -127,19 +127,19 @@ class Training extends Component {
                     </TD>
                     <TD>
                       {
-                        (wednesday.planned === 'OFF') ? 
+                        (wednesday.planned === 'OFF') ?
                         <div>
                           <p className={bold}>{wednesday.date}</p>
                           <p> { wednesday.planned } </p>
-                        </div> 
+                        </div>
                         :
                         <div>
                           <a className={bold} onClick={() => this.showDay(wednesday)}>{wednesday.date}</a>
                           { wednesday.warmup && <p className={wednesday.warmupStatus()}>Warm Up: {wednesday.warmup} Easy/LR</p>}
                           <p>Planned: {wednesday.planned} {wednesday.type}</p>
                           { wednesday.cooldown && <p className={wednesday.cooldownStatus()}>Cool Down: {wednesday.cooldown} Easy/LR</p>}
-                          { (wednesday.completed) ? 
-                            <p className={wednesday.status()}>Completed: {wednesday.completed} miles</p> 
+                          { (wednesday.completed) ?
+                            <p className={wednesday.status()}>Completed: {wednesday.completed} miles</p>
                             :
                             <button onClick={this.importData} name={`${week},wednesday`}>Import Run(s)</button>
                           }
@@ -148,7 +148,7 @@ class Training extends Component {
                     </TD>
                     <TD>
                       {
-                        (thursday.planned === 'OFF') ? 
+                        (thursday.planned === 'OFF') ?
                         <div>
                           <p className={bold}>{thursday.date}</p>
                           <p> { thursday.planned } </p>
@@ -159,8 +159,8 @@ class Training extends Component {
                           { thursday.warmup && <p className={thursday.warmupStatus()}>Warm Up: {thursday.warmup} Easy/LR</p>}
                           <p>Planned: {thursday.planned} {thursday.type}</p>
                           { thursday.cooldown && <p className={thursday.cooldownStatus()}>Cool Down: {thursday.cooldown} Easy/LR</p>}
-                          { (thursday.completed) ? 
-                            <p className={thursday.status()}>Completed: {thursday.completed} miles</p> 
+                          { (thursday.completed) ?
+                            <p className={thursday.status()}>Completed: {thursday.completed} miles</p>
                             :
                             <button onClick={this.importData} name={`${week},thursday`}>Import Run(s)</button>
                           }
@@ -169,7 +169,7 @@ class Training extends Component {
                     </TD>
                     <TD>
                       {
-                        (friday.planned === 'OFF') ? 
+                        (friday.planned === 'OFF') ?
                         <div>
                           <p className={bold}>{friday.date}</p>
                           <p> { friday.planned } </p>
@@ -180,8 +180,8 @@ class Training extends Component {
                           { friday.warmup && <p className={friday.warmupStatus()}>Warm Up: {friday.warmup} Easy/LR</p>}
                           <p>Planned: {friday.planned} {friday.type}</p>
                           { friday.cooldown && <p className={friday.cooldownStatus()}>Cool Down: {friday.cooldown} Easy/LR</p>}
-                          { (friday.completed) ? 
-                            <p className={friday.status()}>Completed: {friday.completed} miles</p> 
+                          { (friday.completed) ?
+                            <p className={friday.status()}>Completed: {friday.completed} miles</p>
                             :
                             <button onClick={this.importData} name={`${week},friday`}>Import Run(s)</button>
                           }
@@ -190,7 +190,7 @@ class Training extends Component {
                     </TD>
                     <TD>
                       {
-                        (saturday.planned === 'OFF') ? 
+                        (saturday.planned === 'OFF') ?
                         <div>
                           <p className={bold}>{saturday.date}</p>
                           <p> { saturday.planned } </p>
@@ -201,8 +201,8 @@ class Training extends Component {
                           { saturday.warmup && <p className={saturday.warmupStatus()}>Warm Up: {saturday.warmup} Easy/LR</p>}
                           <p>Planned: {saturday.planned} {saturday.type}</p>
                           { saturday.cooldown && <p className={saturday.cooldownStatus()}>Cool Down: {saturday.cooldown} Easy/LR</p>}
-                          { (saturday.completed) ? 
-                            <p className={saturday.status()}>Completed: {saturday.completed} miles</p> 
+                          { (saturday.completed) ?
+                            <p className={saturday.status()}>Completed: {saturday.completed} miles</p>
                             :
                             <button onClick={this.importData} name={`${week},saturday`}>Import Run(s)</button>
                           }
@@ -211,7 +211,7 @@ class Training extends Component {
                     </TD>
                     <TD>
                       {
-                        (sunday.planned === 'OFF') ? 
+                        (sunday.planned === 'OFF') ?
                         <div>
                           <p className={bold}>{sunday.date}</p>
                           <p> { sunday.planned } </p>
@@ -222,8 +222,8 @@ class Training extends Component {
                           { sunday.warmup && <p className={sunday.warmupStatus()}>Warm Up: {sunday.warmup} Easy/LR</p>}
                           <p>Planned: {sunday.planned} {sunday.type}</p>
                           { sunday.cooldown && <p className={sunday.cooldownStatus()}>Cool Down: {sunday.cooldown} Easy/LR</p>}
-                          { (sunday.completed) ? 
-                            <p className={sunday.status()}>Completed: {sunday.completed} miles</p> 
+                          { (sunday.completed) ?
+                            <p className={sunday.status()}>Completed: {sunday.completed} miles</p>
                             :
                             <button onClick={this.importData} name={`${week},sunday`}>Import Run(s)</button>
                           }
